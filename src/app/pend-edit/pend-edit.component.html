@@ -1,0 +1,125 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Pending</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+
+    <div class="modal-body">
+    <form [formGroup]="pendForm" >
+        <div class="form-group" >
+            <div class="row">
+                <div class="col"> 
+                    <label class="control-label">Company:</label>
+                    <input class="form-control" type="text" formControlName="company" placeholder="Company" >
+                    <label class="control-label has-error" 
+                        [ngClass]="{'alert-danger': pendForm.get('company').errors 
+                        && pendForm.get('company').touched}"
+
+                        *ngIf="pendForm.get('company').touched 
+                        && pendForm.get('company').hasError('required')">
+                        Company is Required
+                  </label>
+                </div>
+                <div class="col">
+                        <label class="control-label">Job Owner:</label>
+                        <select class="form-control" formControlName="jobOwner">
+                            <option *ngFor="let employee of employees" value="{{employee.uid}}">{{employee.knownAs}}</option>
+                        </select>
+                        <label class="control-label has-error" 
+                            [ngClass]="{'alert-danger': pendForm.get('jobOwner').errors 
+                            && pendForm.get('jobOwner').touched}"
+
+                            *ngIf="pendForm.get('jobOwner').touched 
+                            && pendForm.get('jobOwner').hasError('required')">
+                            Job Owner as is Required
+                      </label>
+                </div>
+                <div class="col">
+                        <label class="control-label" >Candidate Owner:</label>
+                        <select class="form-control" formControlName="sendOut">
+                            <option *ngFor="let employee of employees" value="{{employee.uid}}">{{employee.knownAs}}</option>
+                        </select>
+                        <label class="control-label has-error rounded" 
+                        [ngClass]="{'alert-danger': pendForm.get('jobOwner').errors 
+                        && pendForm.get('sendOut').touched}"
+
+                        *ngIf="pendForm.get('sendOut').touched 
+                        && pendForm.get('sendOut').hasError('required')">
+                        Candidate Owner Required
+                  </label>
+                </div>
+            </div>
+           
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <input class="form-control" type="text" formControlName="candidate" placeholder="Candidate" >
+                    <label class="control-label has-error" 
+                    [ngClass]="{'alert-danger': pendForm.get('candidate').errors 
+                    && pendForm.get('candidate').touched}"
+
+                    *ngIf="pendForm.get('candidate').touched 
+                    && pendForm.get('candidate').hasError('required')">
+                    Candidate is Required 
+              </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <input class="form-control" type="text" formControlName="baseSalary" placeholder="Salary" >
+                    <label class="control-label has-error" 
+                    [ngClass]="{'alert-danger': pendForm.get('baseSalary').errors 
+                    && pendForm.get('baseSalary').touched}"
+
+                    *ngIf="pendForm.get('baseSalary').touched 
+                    && pendForm.get('baseSalary').hasError('required')">
+                   Salary Required
+              </label>
+                    <div class="row">
+                        <div class="co">
+                            <input class="form-control" type="text" formControlName="feePercent" placeholder="Fee" >
+                            <label class="control-label has-error" 
+                            [ngClass]="{'alert-danger': pendForm.get('feePercent').errors 
+                            && pendForm.get('feePercent').touched}"
+
+                            *ngIf="pendForm.get('feePercent').touched 
+                            && pendForm.get('feePercent').hasError('required')">
+                            Fee Required
+                      </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <textarea class="form-control" rows="4" placeholder="Notes" formControlName="status"></textarea>
+                    <label class="control-label has-error" 
+                    [ngClass]="{'alert-danger': pendForm.get('status').errors 
+                    && pendForm.get('status').touched}"
+
+                    *ngIf="pendForm.get('status').touched 
+                    && pendForm.get('status').hasError('required')">
+                    Notes Required
+                    </label>
+                </div>
+            </div>
+          
+            
+
+        </div>
+    </form> <!-- end form -->
+    </div>
+    <div class="modal-footer">
+    <button (click)="test()">test</button>
+      <button type="button" class="btn btn-outline-dark btn-outline-dark" (click)="exit()">cancel</button>
+      <button type="button" [disabled]="!pendForm.valid" class="btn btn-outline-dark" (click)="save()">Save</button>
+    </div>
+</ng-template>
+
+  
+<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Add Pending</button>
+
+  
+
+

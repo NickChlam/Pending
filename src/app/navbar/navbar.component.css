@@ -1,0 +1,45 @@
+nav {
+    padding: .5rem;
+    background-color: #34434B;
+    border-radius: 0;
+    box-shadow: 0 2px 5px 0 rgba (0,0,0,.24);
+}
+img {
+    padding: 0px;
+    width: 75px;
+  }
+  
+#nav-dropdown {
+    
+    color: #FFF;
+}
+.dropdown-menu  {
+    border-radius: 0;
+}
+.navbar-nav {
+    float: right;
+}
+
+@media only screen and (max-width: 500px) {
+    
+    nav {
+        width: 100%;
+    }
+    img {
+        width: 50%;
+        height: 50%;
+    }
+    .nav-item,
+    .dropdown-item,
+    .nav-dropdown,
+    .dropdown-menu{
+       width: 5px;
+       font-size: .5rem;
+       
+      
+    }
+    .navbar-nav{
+        float: initial;
+    }
+    
+}

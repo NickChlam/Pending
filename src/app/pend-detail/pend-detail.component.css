@@ -1,0 +1,59 @@
+h1 {
+    margin-bottom :2rem;
+}
+thead th   {
+    border-top: none;
+    border-bottom: 1px solid #34434B;
+}
+th {
+    font-weight: bold;
+}
+td {
+    border-bottom : .5px solid rgba(52,67,75,.1);
+    font-weight: lighter;
+}
+i {
+    padding-right: .5rem; 
+}
+#edit {
+    cursor: pointer;
+    color: green;
+}
+#delete {
+    cursor: pointer;
+    color: black;
+    
+}
+.fa-trash{
+    transition: .5s ease;
+    text-align: center;
+    
+}
+.fa-trash:hover{
+    transition:  .2s ease;
+    color: red;
+}
+.fa-pencil {
+    transition: .5s ease;
+    text-align: center;
+}
+.fa-pencil:hover {
+    transition: .2s ease;
+    color: blue;
+}
+app-pend-edit{
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+@media only screen and (max-width: 500px) {
+    .table {
+        width:100%;
+        font-size: .55rem;
+    }
+    h1 {
+        font-size: .9rem;
+    }
+   
+
+}
