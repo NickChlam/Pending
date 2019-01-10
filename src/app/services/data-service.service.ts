@@ -3,13 +3,14 @@ import { Pending } from '../models/pending';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { getViewData } from '@angular/core/src/render3/instructions';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
   pendingCollection: AngularFirestoreCollection<Pending>;
-  userCollection: AngularFirestoreCollection; //TODO : create model for User 
+  userCollection: AngularFirestoreCollection<User>; //TODO : create model for User 
   
   user;
 
@@ -61,8 +62,20 @@ export class DataService {
     return this.userCollection.valueChanges();
   } 
 
-  
+  getUsers(){
+    var userData: Observable<User[]>;
+    
+    this.userCollection = this.afs.collection('users');
 
+    userData =  this.userCollection.valueChanges();
+
+    return userData;
+
+    
+  }
+
+  
+ 
   
 
 

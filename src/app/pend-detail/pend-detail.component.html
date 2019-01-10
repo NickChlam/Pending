@@ -1,12 +1,11 @@
 
 
-<div class="row">
-    <div class="col-lg-4">
-    </div>
-    <div class="col-lg-4"></div>
-        <app-pend-edit [pending]="pending" ></app-pend-edit>
-    <div class="row">
-    <div class="col-lg-4">
+
+
+<div class="row justify-content-end">
+   
+    <div class="col-sm-2">
+            <app-pend-edit [pending]="pending" ></app-pend-edit>
     </div>
 </div>
 
@@ -32,15 +31,34 @@
                     <td> {{ pend.candidate }}</td>
                     <td> {{ pend.jobOwner }} </td>
                     <td> {{ pend.sendOut }}  </td>
-                    <td> {{ pend.baseSalary }}</td>
+                    <td> {{ pend.baseSalary | currency }}</td>
                     <td> {{ pend.feePercent }} </td>
-                    <td> {{ calcFeeAmount(pend) }}  </td>
+                    <td> {{ calcFeeAmount(pend) | currency}}  </td>
                     <td> {{ pend.status }} </td>
                 </tr>
-              </tbody>
+            </tbody>
         </table>
     </div>
-</div>
+
+    <div class="row justify-content-end">
+        <div class="col-md-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th> Avg Fee %</th>
+                        <th> Total pending </th>
+                    </tr>
+                    <tr>
+                        <td> {{ calcAvgFee(pending)| number }} </td>
+                        <td>{{ calcTotal(pending) | currency }}</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    
+   
+
 
 <hr>
 

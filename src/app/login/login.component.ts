@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase/app';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AlertifyService } from '../services/alertify.service';
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
@@ -12,7 +13,9 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
   constructor(public afAuth: AngularFireAuth, private fb: FormBuilder,
-              private router: Router ) { }
+              private router: Router,
+              private alertify : AlertifyService
+              ) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -35,12 +38,18 @@ export class LoginComponent implements OnInit {
 
   login() {
     
+    
     this.afAuth.auth.signInWithEmailAndPassword(this.email.value, this.password.value)
         .then(value => {
           if(value)
             this.router.navigate(['/detail']);
-            console.log(this.afAuth.auth.currentUser)
-    }) 
+           
+            
+    }, err => {
+      this.alertify.error(err.message)
+      this.loginForm.controls.password.reset();
+      
+    },) 
 
     
   }

@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { DataService } from '../services/data-service.service';
 import { AuthService } from '../services/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { User } from '../models/user';
+
 
 
 @Component({
@@ -13,10 +15,13 @@ import { AngularFireAuth } from '@angular/fire/auth';
   styleUrls: ['./pend-detail.component.css']
 })
 export class PendDetailComponent implements OnInit {
-  
+  users: User[] = [];
   pending: Pending[] = [];
   items: Observable<any[]>;
-  data1: any;
+  offices: number[];
+
+
+ 
   
   constructor( private afs: AngularFirestore, private dataService: DataService,
                private auth: AuthService,
@@ -25,9 +30,44 @@ export class PendDetailComponent implements OnInit {
    }
 
   ngOnInit() {
+    
+    this.getUsers();
+    
     this.dataService.getData('items').subscribe(data => {
       this.pending = data;
-    })
+      this.convertUIDtoName(this.pending);
+    }, err => {
+      //TODO : log errors
+    });
+
+   
+   
+
+  }
+
+  getUsers(){
+    this.dataService.getUsers().subscribe(data => {
+      this.users = data;
+      
+    }, err => {
+      // TODO: error logger 
+    });
+    
+  }
+
+  getUserName(uid: string, userData: User[]){
+    var x = userData.map(x => {
+      return x.uid
+    }).indexOf(uid)
+
+    return userData[x].knownAs;
+  }
+
+  convertUIDtoName(pend: Pending[]){
+   pend.map(element => {
+      element.jobOwner = this.getUserName(element.jobOwner, this.users);
+      element.sendOut = this.getUserName(element.sendOut, this.users);
+    });
   }
 
   calcFeeAmount(pend: Pending){ 
@@ -35,8 +75,25 @@ export class PendDetailComponent implements OnInit {
       return pend.baseSalary * pend.feePercent;
     else
     return pend.baseSalary * (pend.feePercent / 100);
-
   }
+
+  calcAvgFee(pend: Pending[]){
+    const sum = pend.reduce((accumulator, Currentvalue) => {
+      return accumulator + Number(Currentvalue.feePercent)
+    }, 0)
+ 
+    return ( sum / pend.length ) ;
+  }
+
+  calcTotal(pend: Pending[]){
+    const sum = pend.reduce((accumulator, Currentvalue) => {
+      return accumulator + Number(Currentvalue.baseSalary * (Currentvalue.feePercent/100))
+    }, 0)
+ 
+    return ( sum  ) ;
+  }
+
+  
 
  
 

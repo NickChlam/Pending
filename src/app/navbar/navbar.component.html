@@ -1,11 +1,11 @@
 
 <nav class="navbar-dark bg-inverse">               
-  <div class="container" *ngIf="(afAuth.user | async) as user" >
+  <div class="container"  >
         
     <a [routerLink]="['/home']" routerLinkActive="router-link-active" class="navbar-brand"><img src="/assets/RH.jpg" alt="" class="img-thumbmail img-fluid float-left"> </a>
       <ul class="nav navbar-nav ">
           <li class="nav-item dropdown">
-              <a [routerLink]="['/home']" routerLinkActive="router-link-active" class="nav-link dropdown-toggle " id="nav-dropdown" data-toggle="dropdown" aria-expanded="false" >{{ user?.email}}</a>
+              <a *ngIf="(afAuth.user | async) as user" [routerLink]="['/home']" routerLinkActive="router-link-active" class="nav-link dropdown-toggle " id="nav-dropdown" data-toggle="dropdown" aria-expanded="false" >{{ user?.email}}</a>
               <div class="dropdown-menu" aria-labelledby="nav-dropdown">
                   <a [routerLink]="['/home']" routerLinkActive="router-link-active" class="dropdown-item">Sign Out </a>
                   

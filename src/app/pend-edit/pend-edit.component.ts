@@ -6,6 +6,7 @@ import { DataService } from '../services/data-service.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthService } from '../services/auth.service';
 import { map } from 'rxjs/operators';
+import { User } from 'firebase';
 
 @Component({
   selector: 'app-pend-edit',
@@ -94,6 +95,8 @@ export class PendEditComponent  {
     this.pendForm.reset();
     
   }
+
+ 
 
   getOffice(){
     this.currUserFromFirebase.forEach( value => {
