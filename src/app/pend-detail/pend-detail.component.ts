@@ -6,6 +6,7 @@ import { DataService } from '../services/data-service.service';
 import { AuthService } from '../services/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '../models/user';
+import { getViewData } from '@angular/core/src/render3/instructions';
 
 
 
@@ -19,6 +20,7 @@ export class PendDetailComponent implements OnInit {
   pending: Pending[] = [];
   items: Observable<any[]>;
   offices: number[];
+  office = localStorage.getItem('office')
 
 
  
@@ -26,23 +28,21 @@ export class PendDetailComponent implements OnInit {
   constructor( private afs: AngularFirestore, private dataService: DataService,
                private auth: AuthService,
                private afAuth: AngularFireAuth) {
+
+                
     
    }
 
   ngOnInit() {
-    
+   
     this.getUsers();
     
-    this.dataService.getData('items').subscribe(data => {
+    this.dataService.getData('items', this.office).subscribe(data => {
       this.pending = data;
       this.convertUIDtoName(this.pending);
     }, err => {
       //TODO : log errors
     });
-
-   
-   
-
   }
 
   getUsers(){

@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, Input } from '@angular/core';
-import {NgbModal, ModalDismissReasons, NgbDatepicker, NgbDropdown, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, ModalDismissReasons, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Pending } from '../models/pending';
 import { DataService } from '../services/data-service.service';
@@ -43,20 +43,23 @@ export class PendEditComponent  {
     baseSalary: ['',Validators.required],
     feePercent: ['',Validators.required],
     status: ['',Validators.required],
-    user: ['']
+    user: [''],
+    office: ['']
   })
 
   //get current users uid
-  this.user =  this.afAuth.auth.currentUser.uid
+  this.user =  this.afAuth.auth.currentUser;
   
   // get user from FireStore set users from office;
   // TODO: refactor 
-  this.dataService.getOfficeUser(this.user)
+  this.dataService.getOfficeUser(this.user.uid)
     .subscribe(data => {
               this.currUserFromFirebase = data;
               this.getOffice();
               this.getUsersFromOffice(this.office);
       })
+
+
  }
 
   open(content) {
@@ -68,6 +71,7 @@ export class PendEditComponent  {
         this.pendForm.reset();
     });
     
+    console.log(this.office)
   }
 
   private getDismissReason(reason: any): string {
@@ -83,7 +87,9 @@ export class PendEditComponent  {
   }
 
   save(){
-    this.pendForm.controls['user'].setValue(this.user)
+    console.log(this.office)
+    this.pendForm.controls['user'].setValue(this.user.uid)
+    this.pendForm.controls['office'].setValue(this.office)
     this.pending.push(this.pendForm.value);
     this.modalService.dismissAll() ;
     //save data 

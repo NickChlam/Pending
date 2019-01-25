@@ -22,7 +22,7 @@ interface User {
 export class AuthService {
 
   user: Observable<User>;
-
+  
   constructor(private afAuth: AngularFireAuth,
               private afs: AngularFirestore,
               private router: Router,  ){

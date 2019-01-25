@@ -17,9 +17,12 @@ export class DataService {
   constructor(private afs: AngularFirestore) { }
 
   
-  getData(collection: string){
+  getData(collection: string, office: string){
     var pendingData: Observable<Pending[]>;
-    this.pendingCollection = this.afs.collection(collection)
+    this.pendingCollection = this.afs.collection(collection, ref => {
+      return ref 
+        .where('office', '==', office)
+    })
     pendingData = this.pendingCollection.valueChanges();
     return pendingData;
 
