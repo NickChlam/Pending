@@ -3,11 +3,22 @@
 
 
 <div class="row justify-content-end">
-   
+    
     <div class="col-sm-2">
             <app-pend-edit [pending]="pending" ></app-pend-edit>
     </div>
 </div>
+<form [formGroup]="updateFormData" >
+    <select formControlName="office">
+        <option *ngFor="let office of Offices" value={{office}}> {{office}}</option>
+    </select>
+    <select  formControlName="users">
+        <option  *ngFor="let user of users" value={{user.knownAs}}> {{user.knownAs}}</option>
+    </select>
+</form>
+
+    <button (click)="updateData()">Update</button>
+
 
     <div class="col-lg-12">
         <table class="table">

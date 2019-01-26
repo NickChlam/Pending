@@ -39,8 +39,6 @@ export class LoginComponent implements OnInit {
   get password() { return this.loginForm.get('password')}
   
   login() {
-    
-    
     this.afAuth.auth.signInWithEmailAndPassword(this.email.value, this.password.value)
         .then(value => {
           if(value)

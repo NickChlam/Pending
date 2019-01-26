@@ -17,7 +17,7 @@ export class DataService {
   constructor(private afs: AngularFirestore) { }
 
   
-  getData(collection: string, office: string){
+  getPendData(collection: string, office: string){
     var pendingData: Observable<Pending[]>;
     this.pendingCollection = this.afs.collection(collection, ref => {
       return ref 

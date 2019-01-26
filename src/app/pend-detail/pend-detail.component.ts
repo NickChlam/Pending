@@ -6,7 +6,8 @@ import { DataService } from '../services/data-service.service';
 import { AuthService } from '../services/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '../models/user';
-import { getViewData } from '@angular/core/src/render3/instructions';
+import { Offices} from '../models/offices';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 
 
@@ -19,25 +20,34 @@ export class PendDetailComponent implements OnInit {
   users: User[] = [];
   pending: Pending[] = [];
   items: Observable<any[]>;
-  offices: number[];
-  office = localStorage.getItem('office')
-
-
+  userOffice = localStorage.getItem('office')
+  Offices = Offices;
+  updateFormData: FormGroup;
  
   
   constructor( private afs: AngularFirestore, private dataService: DataService,
                private auth: AuthService,
-               private afAuth: AngularFireAuth) {
+               private afAuth: AngularFireAuth,
+               private fb: FormBuilder
+               ) {
 
                 
     
    }
 
   ngOnInit() {
-   
-    this.getUsers();
     
-    this.dataService.getData('items', this.office).subscribe(data => {
+    this.getData(this.userOffice);
+    this.updateFormData = this.fb.group({
+      office: ['',],
+      users:[this.userOffice]
+    })
+
+    this.getUsers();
+  }
+  
+  getData(office: string){
+    this.dataService.getPendData('items', office).subscribe(data => {
       this.pending = data;
       this.convertUIDtoName(this.pending);
     }, err => {
@@ -53,6 +63,14 @@ export class PendDetailComponent implements OnInit {
       // TODO: error logger 
     });
     
+  }
+
+  updateData(){
+    this.pending = [];
+    let off = this.updateFormData.controls['office'].value;
+    this.getData(off);
+    
+
   }
 
   getUserName(uid: string, userData: User[]){

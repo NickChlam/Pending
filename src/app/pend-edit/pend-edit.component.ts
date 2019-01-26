@@ -71,7 +71,7 @@ export class PendEditComponent  {
         this.pendForm.reset();
     });
     
-    console.log(this.office)
+    
   }
 
   private getDismissReason(reason: any): string {
@@ -87,7 +87,7 @@ export class PendEditComponent  {
   }
 
   save(){
-    console.log(this.office)
+    
     this.pendForm.controls['user'].setValue(this.user.uid)
     this.pendForm.controls['office'].setValue(this.office)
     this.pending.push(this.pendForm.value);
@@ -101,9 +101,6 @@ export class PendEditComponent  {
     this.pendForm.reset();
     
   }
-
- 
-
   getOffice(){
     this.currUserFromFirebase.forEach( value => {
       this.office = value.office
