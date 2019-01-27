@@ -11,15 +11,16 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup;
+   loginForm: FormGroup;
 
-  constructor(public afAuth: AngularFireAuth, private fb: FormBuilder,
+   constructor(public afAuth: AngularFireAuth, private fb: FormBuilder,
               private router: Router,
               private alertify : AlertifyService,
               private auth: AuthService
               ) { }
 
   ngOnInit() {
+    console.log("Checking if this !!!works DOes it? it does ")
     this.loginForm = this.fb.group({
       'email': ['', [
         Validators.required, 
