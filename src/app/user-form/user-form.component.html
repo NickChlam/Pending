@@ -1,102 +1,104 @@
 <ng-container *ngIf="(auth.user | async) || {} as user">
     
+  <div class="signup-form">	
+    <form [formGroup]="signupForm" *ngIf="!user.uid" (ngSubmit)="signup()">
+  
+        <h2>Create Account</h2>
+        <p class="lead">It's free and hardly takes more than 30 seconds.</p>
+        <!-- knownAs / username -->
+          <div class="form-group" [ngClass]="{'alert-danger': signupForm.get('knownAs').errors 
+                && signupForm.get('knownAs').touched}">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user"></i></span>
+              <input  class="form-control" placeholder="Known as" formControlName="knownAs" required="required">
+            </div>
+          </div>
 
-  <form [formGroup]="signupForm" *ngIf="!user.uid" (ngSubmit)="signup()">
- 
-    <h3>New User Sign Up :  </h3>
-  <!-- email input -->
-  <div class="form-group"
-      [ngClass]="{'alert-danger': signupForm.get('email').errors 
+        <!-- email address-->
+          <div class="form-group" [ngClass]="{'alert-danger': signupForm.get('email').errors 
                 && signupForm.get('email').touched}">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+              <input type="email" class="form-control" formControlName="email" placeholder="Email" required>
+            </div>
+          </div>
 
-      <input type="email" class="form-control" formControlName="email" placeholder="Email">
+        <!-- OFFICE -->
 
-      <div *ngIf="email.invalid && email.dirty">
-          Your email doesnt look quite right
-      </div>
+        <div class="form-group" [ngClass]="{'alert-danger': signupForm.get('office').errors 
+          && signupForm.get('office').touched}">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-building"></i></span>
+            <select class="form-control" formControlName="office">
+                <option value="" disabled>Office</option>
+              <option *ngFor="let office of offices" value="{{office}}">{{office}}<option>
+            </select>
+          </div>
+          <span class="control-label alert-danger tool-tip" 
+            *ngIf="signupForm.get('office').touched 
+            && signupForm.get('office').hasError('required')">
+            Office Required
+          </span>
+        </div>
 
-      <label class="control-label has-error" 
-        *ngIf="signupForm.get('email').touched 
-        && signupForm.get('email').hasError('required')">
-        email is required
-      </label>
-  </div>
+        <!-- LOB -->
 
-   <!-- input knownAs-->
-  <div class="form-group" 
-        [ngClass]="{'alert-danger': signupForm.get('knownAs').errors 
-        && signupForm.get('knownAs').touched}">
-      <input  class="form-control"
-        placeholder="Known as" 
-        formControlName="knownAs">
-
-      <label class="control-label alert-danger" 
-        *ngIf="signupForm.get('knownAs').touched 
-        && signupForm.get('knownAs').hasError('required')">
-        Known as is required
-      </label>
-  </div>
-
-    <!-- password -->
-  <div class="form-group" 
-        [ngClass]="{'alert-danger': signupForm.get('password').errors 
-        && signupForm.get('password').touched}">
-      <input type="password" class="form-control" formControlName="password"
-                                            required placeholder="Password">
-
-      <div *ngIf="password.invalid && password.touched">
-        Password must be between 6 and 24 charachters and at least one number
-      </div>
-      <label class="control-label alert-danger" 
-          *ngIf="signupForm.get('password').touched 
-          && signupForm.get('password').hasError('required')">
-          Password Required
-      </label>
-  </div>
-
-    <!-- confirm password-->
-  <div class="form-group" 
-        [ngClass]="{'alert-danger': signupForm.get('confirmPassword').errors
-        && signupForm.get('confirmPassword').touched
-        || signupForm.get('confirmPassword').touched
-        && signupForm.hasError('mismatch') } ">
-      <input type="password" class="form-control" formControlName="confirmPassword" 
-                                                required placeholder="confirm password">
-
-
-      <label *ngIf="signupForm.hasError('mismatch') 
-                && signupForm.get('confirmPassword').touched" 
-        class="control-label has-error" 
-        for="inputError1" 
-        id="inputError1">
-        password must match
-    </label>
-       
-  </div>
-
-  <!-- Office -->
-  <div class="form-group" 
-      [ngClass]="{'alert-danger': signupForm.get('office').errors 
-      && signupForm.get('office').touched}">
-    <label for="office" class="control-label">Office</label>
-      <select class="form-control" formControlName="office">
-        <option *ngFor="let office of offices" value="{{office}}">{{office}}<option>
-    </select>
-    <label class="control-label alert-danger" 
+        <div class="form-group" [ngClass]="{'alert-danger': signupForm.get('LOB').errors 
+        && signupForm.get('LOB').touched}">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-briefcase"></i></span>
+          <select class="form-control" formControlName="LOB">
+            <option value="" disabled>Line of Business</option>
+            <option value="RHT">RHT</option>
+            <option value="TCG">TCG</option>
+            <option value="RHFA">RHFA</option>
+            <option value="RHL">RHL</option>
+          </select>
+        </div>
+        <span class="control-label alert-danger tool-tip" 
           *ngIf="signupForm.get('office').touched 
           && signupForm.get('office').hasError('required')">
-          Office Required
-      </label>
+          LOB Required
+        </span>
+      </div>
+        
+        <!-- password -->
+        <div class="form-group" [ngClass]="{'alert-danger': signupForm.get('password').errors 
+                && signupForm.get('password').touched}">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+            <input type="password" class="form-control" formControlName="password" required placeholder="Password">
+          </div>
+          <div class="tool-tip" *ngIf="password.invalid && password.touched">
+              <span>must be 6-24 charachters and contain one number</span>  
+            </div>
+        </div>
+
+        <!-- confirm password-->
+        <div class="form-group"
+            [ngClass]="{'alert-danger': signupForm.get('confirmPassword').errors
+            && signupForm.get('confirmPassword').touched
+            || signupForm.get('confirmPassword').touched
+            && signupForm.hasError('mismatch') } ">
+
+          <div class="input-group">
+            <span class="input-group-addon">
+              <i class="fa fa-lock"></i> 
+              <i class="fa fa-check"></i>
+            </span>
+            <input type="password" class="form-control" formControlName="confirmPassword" required placeholder="confirm password">
+          </div>
+          <div class="tool-tip" *ngIf="signupForm.hasError('mismatch') && signupForm.get('confirmPassword').touched" >
+              <span>password must match </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" [disabled]="!signupForm.valid" class="form-control" class="btn btn-primary btn-block btn-lg">Submit</button>
+
+            </div>
+        <p class="small text-center">By clicking the Sign Up button, you agree to our <br><a href="#">Terms &amp; Conditions</a>, and <a href="#">Privacy Policy</a>.</p>
+    </form>
+      <div class="text-center">Already have an account? <a [routerLink]="['/home']" routerLinkActive="router-link-active" >Login here</a>.</div>
   </div>
-
-
-    <div *ngIf="signupForm.valid">lets do this! {{ signupForm.valid}} </div>
-
-    <button type="submit" [disabled]="!signupForm.valid" class="form-control">Submit</button>
-    
- 
-</form>
-
-
-
 </ng-container>

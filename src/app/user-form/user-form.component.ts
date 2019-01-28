@@ -38,7 +38,8 @@ export class UserFormComponent implements OnInit {
         ],
         confirmPassword: ['', Validators.required],
         knownAs: ['', Validators.required],
-        office: ['', Validators.required]
+        office: ['', Validators.required],
+        LOB:['',Validators.required]
 
     },  {validator: this.passwordMatchValidator});
 
@@ -59,11 +60,13 @@ export class UserFormComponent implements OnInit {
 
   get knownAs() { return this.signupForm.get('knownAs')};
   get office() { return this.signupForm.get('office')};
+  get lob() { return this.signupForm.get('LOB')};
 
   signup() {
-    
+
+    console.log(this.lob.value)
     this.auth.emailSignUp(this.email.value, this.password.value, this.knownAs.value,
-                          this.office.value);
+                          this.office.value,this.lob.value);
   }
 
 }

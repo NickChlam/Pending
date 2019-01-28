@@ -2,5 +2,6 @@ export interface User {
     email: string, 
     knownAs: string, 
     office: string,
-    uid: string, 
+    uid: string,
+    LOB: string 
 }
