@@ -1,10 +1,101 @@
-.login{
-   margin-top: 2rem;
+
+.alert-danger{
+    background: none;
+    color: #9E1C34;
 }
-.col{
-    margin-top: 1rem;
+.tool-tip{
+    font-size: .75rem;
+    margin-left: 37px;
 }
-.error{
-    color: red;
-    margin-bottom: 1rem;
+select { 
+    text-align-last: left;
+    padding-right: 5rem;
+    direction: ltr;
+
+ }
+
+
+.form-control, .form-control:focus, .input-group-addon {
+    border-color: #e1e1e1;
+    border-radius: 0;
+}
+.signup-form {
+    width: 390px;
+    margin: 0 auto;
+    padding: 30px 0;
+}
+.signup-form h2 {
+    color: #636363;
+    margin: 0 0 15px;
+    text-align: center;
+}
+.signup-form .lead {
+    font-size: 14px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+.signup-form form {		
+    border-radius: 1px;
+    border-radius: 50px 23px 80px 19px;
+    margin-bottom: 15px;
+    background: #fff;
+    border: 1px solid #f3f3f3;
+    box-shadow: 0px 2px 2px rgba(158,28,52,0.81);
+    padding: 30px;
+}
+.signup-form .form-group {
+    margin-bottom: 20px;
+}
+.signup-form label {
+    font-weight: normal;
+    font-size: 13px;
+}
+.signup-form .form-control {
+    min-height: 38px;
+    box-shadow: none !important;
+    border-width: 0 0 1px 0;
+}
+.signup-form .form-control:focus {
+        border-bottom-color: #9E1C34 !important;
+      
+}
+.signup-form .input-group-addon {
+    max-width: 42px;
+    text-align: center;
+    background: none;
+    border-width: 0 0 1px 0;
+    padding-left: 5px;
+}
+.signup-form .btn {        
+    font-size: 16px;
+    font-weight: bold;
+    background: #9E1C34;
+    border-radius: 3px;
+    border: none;
+    min-width: 140px;
+    outline: none !important;
+}
+.signup-form .btn:hover, .signup-form .btn:focus {
+    background: #9E1C34;
+}
+.signup-form a {
+    color: #9E1C34;
+    text-decoration: none;
+}	
+.signup-form a:hover {
+    text-decoration: underline;
+}
+.signup-form .fa {
+    margin-right: 1rem;
+    font-size: 21px;
+}
+.signup-form .fa-paper-plane {
+    font-size: 17px;
+}
+.signup-form .fa-check {
+    color: #fff;
+    left: 8px;
+    top: 10px;
+    font-size: 8px;
+    position: absolute;
 }
