@@ -8,6 +8,10 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '../models/user';
 import { Offices} from '../models/offices';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { map, take, delayWhen } from 'rxjs/operators';
+import { delay } from 'q';
+
 
 
 
@@ -23,28 +27,44 @@ export class PendDetailComponent implements OnInit {
   userOffice = localStorage.getItem('office')
   Offices = Offices;
   updateFormData: FormGroup;
+  data: any;
+  
  
   
   constructor( private afs: AngularFirestore, private dataService: DataService,
                private auth: AuthService,
                private afAuth: AngularFireAuth,
-               private fb: FormBuilder
+               private fb: FormBuilder,
+               private route: ActivatedRoute
                ) {
-
                 
-    
-   }
+                
+                route.data.subscribe(data => {
+                  this.data = data;
+                  this.pending = data.data;
+                  this.users = data.users
+                  })
+                  
+                
+               
+                
+                          
+   }  
+
+  
 
   ngOnInit() {
-    
-    this.getData(this.userOffice);
+   
+    console.log(this.data)
     this.updateFormData = this.fb.group({
       office: ['',],
-      users:[this.userOffice]
+      users:[this.userOffice,]
     })
 
-    this.getUsers();
+  
+ 
   }
+  
   
   getData(office: string){
     this.dataService.getPendData('items', office).subscribe(data => {
@@ -66,6 +86,7 @@ export class PendDetailComponent implements OnInit {
   }
 
   updateData(){
+    //console.log(this.data.data)
     this.pending = [];
     let off = this.updateFormData.controls['office'].value;
     this.getData(off);
@@ -73,20 +94,33 @@ export class PendDetailComponent implements OnInit {
 
   }
 
-  getUserName(uid: string, userData: User[]){
+
+  
+   convertUIDtoName(pend: Pending[]){
+    
+    pend.map(element => {
+        
+    element.jobOwner = this.getUserName(element.jobOwner, this.data.users);
+      element.sendOut = this.getUserName(element.sendOut, this.data.users);
+    });
+    
+    return pend;
+  }
+
+  async delay(ms: number) {
+    await new Promise(resolve => setTimeout( ()=>resolve(), ms)).then(()=> this.convertUIDtoName(this.pending));
+}
+
+  getUserName(uid: string, userData){
+    
     var x = userData.map(x => {
       return x.uid
     }).indexOf(uid)
 
     return userData[x].knownAs;
+  
   }
 
-  convertUIDtoName(pend: Pending[]){
-   pend.map(element => {
-      element.jobOwner = this.getUserName(element.jobOwner, this.users);
-      element.sendOut = this.getUserName(element.sendOut, this.users);
-    });
-  }
 
   calcFeeAmount(pend: Pending){ 
     if(pend.feePercent < 1)

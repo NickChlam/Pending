@@ -8,6 +8,7 @@ import { Offices } from '../models/offices';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { take, map } from 'rxjs/operators';
+import { AlertifyService } from '../services/alertify.service';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class UserFormComponent implements OnInit {
   signupForm: FormGroup;
   detailForm: FormGroup;
   offices = Offices;
-  constructor(public fb: FormBuilder, public auth: AuthService, private router: Router, private afAuth: AngularFireAuth, private afs: AngularFirestore) { }
+  constructor(public fb: FormBuilder, public auth: AuthService, private router: Router, private afAuth: AngularFireAuth, private afs: AngularFirestore, private alertify: AlertifyService) { }
 
   ngOnInit() {
     this.signupForm = this.fb.group({
@@ -63,10 +64,13 @@ export class UserFormComponent implements OnInit {
   get lob() { return this.signupForm.get('LOB')};
 
   signup() {
-
-    console.log(this.lob.value)
     this.auth.emailSignUp(this.email.value, this.password.value, this.knownAs.value,
-                          this.office.value,this.lob.value);
+                          this.office.value,this.lob.value)
+        .catch(error => this.handleError(error))
+    }
+  // if error, log and notify user 
+  private handleError(err) {
+    this.alertify.error(err.message)
   }
 
 }

@@ -25,6 +25,9 @@ import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
 import { AuthService } from './services/auth.service';
 import { LoginComponent } from './login/login.component';
+import { UserResolverService } from './_resolvers/user-resolver.service';
+import { HttpClientModule } from '@angular/common/http';
+import { GetUsersResolver } from './_resolvers/get-users-resolver.service';
 
 
 
@@ -48,10 +51,11 @@ import { LoginComponent } from './login/login.component';
     AngularFireModule.initializeApp(environment.firebase, 'Pending'),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes), 
+    HttpClientModule
 
   ],
-  providers: [DataService, AuthService, AuthGuard],
+  providers: [DataService, AuthService, AuthGuard, UserResolverService, GetUsersResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase/app';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertifyService } from '../services/alertify.service';
 import { AuthService } from '../services/auth.service';
+import { DataService } from '../services/data-service.service';
+import { User } from '../models/user';
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
@@ -12,15 +14,17 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoginComponent implements OnInit {
    loginForm: FormGroup;
+ 
 
    constructor(public afAuth: AngularFireAuth, private fb: FormBuilder,
               private router: Router,
               private alertify : AlertifyService,
-              private auth: AuthService
+              private auth: AuthService,
+              private dataService: DataService
               ) { }
 
   ngOnInit() {
-    console.log("Checking if this !!!works DOes it? it does ")
+  
     this.loginForm = this.fb.group({
       'email': ['', [
         Validators.required, 
@@ -47,6 +51,8 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('office' , data.office)
               localStorage.setItem('uid', data.uid)
               this.router.navigate(['/detail']);
+            }, err => {
+              this.alertify.error(err)
             })
             
            

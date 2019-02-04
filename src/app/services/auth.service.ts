@@ -6,6 +6,7 @@ import { AngularFireAuth} from '@angular/fire/auth';
 import { Observable, EMPTY } from 'rxjs';
 import { switchMap, map, take } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AlertifyService } from './alertify.service';
 
 interface User {
   uid: string;
@@ -26,7 +27,8 @@ export class AuthService {
   
   constructor(private afAuth: AngularFireAuth,
               private afs: AngularFirestore,
-              private router: Router,  ){
+              private router: Router,
+              private alertify: AlertifyService  ){
       
       this.user = this.afAuth.authState  
         .pipe(switchMap(user => {
@@ -42,21 +44,16 @@ export class AuthService {
   /// Email/Password Auth 
 
   emailSignUp(email: string, password: string, displayName?: string,office?: string, LOB?: string, photoURL?:string  ) {
-    console.log(LOB + 'in email signup')
+    
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then(user => {
-        
         this.router.navigate(['/detail'])
         this.afAuth.auth.currentUser.updateProfile( { 'displayName': displayName, 'photoURL': photoURL});
         return this.setUserDoc(user, displayName, office, LOB)
       })
-      .catch(error => this.handleError(error))
+    
   }
 
-  // if error, log and notify user 
-  private handleError(error) {
-    console.error(error.message)
-  }
 
   // sets user data to firestore after successful login
 
