@@ -20,7 +20,7 @@ import { delay } from 'q';
   templateUrl: './pend-detail.component.html',
   styleUrls: ['./pend-detail.component.css']
 })
-export class PendDetailComponent implements OnInit {
+export class PendDetailComponent implements OnInit   {
   users: User[] = [];
   pending: Pending[] = [];
   items: Observable<any[]>;
@@ -38,22 +38,27 @@ export class PendDetailComponent implements OnInit {
                private route: ActivatedRoute
                ) {
                 
-                
-                route.data.subscribe(data => {
+                this.route.data.subscribe(data => {
                   this.data = data;
                   this.pending = data.data;
                   this.users = data.users
-                  })
+                  })  
                   
-                
-               
-                
-                          
    }  
 
-  
 
+
+  
+  ngAfterViewInit(){
+    console.log('happened')
+    this.afs.collection('users').valueChanges().subscribe().unsubscribe()
+   }
   ngOnInit() {
+    
+    // TODO:  remove subscribe hack to force load the rest of user data 
+    this.afs.collection('users').valueChanges().subscribe()
+
+    this.convertUIDtoName(this.pending)
    
     console.log(this.data)
     this.updateFormData = this.fb.group({

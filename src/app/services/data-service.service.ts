@@ -4,14 +4,14 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { Observable } from 'rxjs';
 
 import { User } from '../models/user';
-import { map, take, first, takeUntil } from 'rxjs/operators';
+import { map, take, first, takeUntil, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
   pendingCollection: AngularFirestoreCollection<Pending>;
-  userCollection: AngularFirestoreCollection<User>; //TODO : create model for User 
+  userCollection: AngularFirestoreCollection<any>; 
   
 
   constructor(private afs: AngularFirestore) { }
@@ -28,6 +28,19 @@ export class DataService {
     pendingData = this.pendingCollection.valueChanges().pipe(take(1))
     return pendingData;
     
+  }
+  
+  getUsersFromOffice(office:string){
+    var userData: Observable<any[]>;
+    this.userCollection = this.afs.collection('users', ref => {
+      return ref
+        .where('office', '==', office)
+        
+    });
+
+    userData =  this.userCollection.valueChanges().pipe( take(1))
+    
+    return userData;
   }
 
   getData(){
@@ -59,19 +72,6 @@ export class DataService {
 
   }
 
-  getUsersFromOffice(office:string){
-    var userData: Observable<User[]>;
-    this.userCollection = this.afs.collection('users', ref => {
-      return ref
-        .where('office', '==', office)
-        
-    });
-
-    userData =  this.userCollection.valueChanges().pipe(first(), map(user => {
-      return user;
-    }));
-    return userData;
-  }
 
   getOfficeUser(uid: string){
     

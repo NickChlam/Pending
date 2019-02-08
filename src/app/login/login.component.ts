@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       'email': ['', [
         Validators.required, 
-        Validators.email 
+        Validators.pattern('^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(rht|roberthalf|tcg)\.com$')
         // TODO: Create Custom @rht email validator 
         ]
       ], 
