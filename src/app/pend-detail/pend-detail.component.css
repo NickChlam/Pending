@@ -5,6 +5,7 @@ h1 {
 .table{
     
 }
+
 thead th   {
     border-top: none;
     border-bottom: 1px solid #34434B;
@@ -22,6 +23,11 @@ td {
 }
 tr{
     font-size: .75rem;
+    cursor: pointer;
+}
+tr:hover{
+    background: #9E1C34;
+    color: white;
 }
 i {
     padding-right: .5rem; 

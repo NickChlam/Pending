@@ -8,7 +8,7 @@
             <app-pend-edit [pending]="pending" ></app-pend-edit>
     </div>
 </div>
-<form [formGroup]="updateFormData" >
+<!-- <form [formGroup]="updateFormData" >
     <select formControlName="office">
         <option *ngFor="let office of Offices" value={{office}}> {{office}}</option>
     </select>
@@ -17,7 +17,7 @@
     </select>
 </form>
 
-    <button (click)="updateData()">Update</button>
+    <button (click)="updateData()">Update</button> -->
 
 
     <div class="col-lg-12 table">
@@ -32,20 +32,30 @@
                     <th> % </th>
                     <th> $</th>
                     <th> Notes </th>
+                    <th *ngIf="clicked"> Candidates -   Owner </th>
+                    
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let pend of pending">
+                <tr *ngFor="let pend of pending; let i = index" (click)="toggle(i)">
                     <!-- <td id="edit" (click)="bugDetail.configureForm(bug)" data-toggle="modal" [attr.data-target]=" '#' + bugDetail.modalId"> <i class="fa fa-pencil" aria-hidden="true"></i> </td>
                     <td id="delete" (click)="bugDetail.deleteBug(bug)"> <i class="fa fa-trash" aria-hidden="true"></i> </td> --> 
                     <td> {{ pend.company}} </td>
                     <td> {{ pend.candidate }}</td>
-                    <td> {{ pend.jobOwner }} </td>
+                    <td> {{ pend.jobOwner }} </td> 
                     <td> {{ pend.sendOut }}  </td>
                     <td> {{ pend.baseSalary | currency }}</td>
                     <td> {{ pend.feePercent }} </td>
                     <td> {{ calcFeeAmount(pend) | currency}}  </td>
                     <td> {{ pend.status }} </td>
+                    <table *ngIf="index==i">
+                        <tr *ngFor="let cand of pend.cand"> 
+                            <td > {{ cand.name }} {{ i }}</td>
+                            <td> {{ cand.uid }}</td>
+                            
+                        </tr>
+                    </table>
+                    
                 </tr>
             </tbody>
         </table>
@@ -74,5 +84,7 @@
 
 
 <hr>
+
+<charts></charts>
 
    

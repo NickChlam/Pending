@@ -11,6 +11,7 @@
     <form [formGroup]="pendForm" >
         <div class="form-group" >
             <div class="row">
+             <!--   Company  -->
                 <div class="col"> 
                     <label class="control-label">Company:</label>
                     <input class="form-control" type="text" formControlName="company" placeholder="Company" >
@@ -23,7 +24,9 @@
                         Company is Required
                   </label>
                 </div>
-                <div class="col">
+
+            <!-- Job Owner -->
+                <div class="col-lg-3">
                         <label class="control-label">Job Owner:</label>
                         <select class="form-control" formControlName="jobOwner">
                             <option *ngFor="let employee of employees" value="{{employee.uid}}">{{employee.knownAs}}</option>
@@ -37,7 +40,9 @@
                             Job Owner as is Required
                       </label>
                 </div>
-                <div class="col">
+
+            <!-- candidate owner -->
+                <!-- <div class="col">
                         <label class="control-label" >Candidate Owner:</label>
                         <select class="form-control" formControlName="sendOut">
                             <option *ngFor="let employee of employees" value="{{employee.uid}}">{{employee.knownAs}}</option>
@@ -50,23 +55,57 @@
                         && pendForm.get('sendOut').hasError('required')">
                         Candidate Owner Required
                   </label>
-                </div>
+                </div> -->
             </div>
            
 
-            <div class="row">
-                <div class="col-lg-6">
-                    <input class="form-control" type="text" formControlName="candidate" placeholder="Candidate" >
-                    <label class="control-label has-error" 
-                    [ngClass]="{'alert-danger': pendForm.get('candidate').errors 
-                    && pendForm.get('candidate').touched}"
+     <!-- candidates input  -->       
+     <div class="row">
+        <div class="col-lg-3">
+            <button class="btn btn-outline-dark" (click)="AddCandidate()">Add Candidate</button>
+        </div>
+    </div>
+            <!-- candidate -->
+            <div *ngFor="let cand of candidates">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" [formControlName]="cand.candidate" placeholder="Candidate" >
+                            <label class="control-label has-error" 
+                            [ngClass]="{'alert-danger': pendForm.get(cand.candidate).errors 
+                            && pendForm.get(cand.candidate).touched}"
 
-                    *ngIf="pendForm.get('candidate').touched 
-                    && pendForm.get('candidate').hasError('required')">
-                    Candidate is Required 
-              </label>
+                            *ngIf="pendForm.get(cand.candidate).touched 
+                            && pendForm.get(cand.candidate).hasError('required')">
+                            Candidate is Required 
+                        </label>
+                    </div>
+            <!-- candidate owner -->
+                
+                    <div class="col-sm-3">
+                        
+                            <select class="form-control" [formControlName]="cand.sendOut">
+                                <option *ngFor="let employee of employees" value="{{employee.uid}}">{{employee.knownAs}}</option>
+                            </select>
+                            <label class="control-label has-error rounded" 
+                                [ngClass]="{'alert-danger': pendForm.get(cand.sendOut).errors 
+                                && pendForm.get(cand.sendOut).touched}"
+        
+                                *ngIf="pendForm.get(cand.sendOut).touched 
+                                && pendForm.get(cand.sendOut).hasError('required')">
+                                Candidate Owner Required
+                            </label>
+                    </div>
+                
+
+                    
+              
                 </div>
-            </div>
+            </div> <!-- end ngFor-->
+            
+<!-- end candidates inputs-->
+
+
+            <!-- salary -->
             <div class="row">
                 <div class="col-lg-3">
                     <input class="form-control" type="text" formControlName="baseSalary" placeholder="Salary" >
@@ -78,6 +117,8 @@
                     && pendForm.get('baseSalary').hasError('required')">
                    Salary Required
               </label>
+
+              <!-- Fee Percent -->
                     <div class="row">
                         <div class="co">
                             <input class="form-control" type="text" formControlName="feePercent" placeholder="Fee" >
@@ -92,6 +133,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Notes -->
                 <div class="col-lg-9">
                     <textarea class="form-control" rows="4" placeholder="Notes" formControlName="status"></textarea>
                     <label class="control-label has-error" 
@@ -105,8 +148,6 @@
                 </div>
             </div>
           
-            
-
         </div>
     </form> <!-- end form -->
     </div>

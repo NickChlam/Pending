@@ -18,12 +18,9 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
    
-
-           
       return this.af.user.pipe(
         map(data => {
           if(data){
-            
             return true;
           }
           else{
@@ -31,7 +28,6 @@ export class AuthGuard implements CanActivate {
             return false;
           }
       }))
-
     }
   }
 

@@ -4,9 +4,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { Pending } from '../models/pending';
 import { DataService } from '../services/data-service.service';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AuthService } from '../services/auth.service';
-import { map } from 'rxjs/operators';
-import { User } from 'firebase';
+
 
 @Component({
   selector: 'app-pend-edit',
@@ -21,6 +19,10 @@ export class PendEditComponent  {
   currUserFromFirebase = [];
   office;
   @Input() pending: Pending[];
+  candidates = [];
+  candidateNum = 0;
+  candOwners = [];
+  
 
 
 
@@ -37,9 +39,7 @@ export class PendEditComponent  {
  ngOnInit(){
   this.pendForm = this.fb.group({
     company: ['',Validators.required],
-    candidate: ['',Validators.required],
     jobOwner: ['',Validators.required],
-    sendOut: ['',Validators.required],
     baseSalary: ['',Validators.required],
     feePercent: ['',Validators.required],
     status: ['',Validators.required],
@@ -87,13 +87,18 @@ export class PendEditComponent  {
   }
 
   save(){
+    var data = [];
     
     this.pendForm.controls['user'].setValue(this.user.uid)
     this.pendForm.controls['office'].setValue(this.office)
+    data.push(this.pendForm.value);
+        
+
     this.pending.push(this.pendForm.value);
     this.modalService.dismissAll() ;
     //save data 
     this.dataService.saveData(this.pendForm.value, 'items');
+    console.log(data)
     this.pendForm.reset();
   }
   exit(){
@@ -113,6 +118,21 @@ export class PendEditComponent  {
     })
   }
 
+  AddCandidate(){
+    
+    this.candidateNum++;
+    this.candidates.push({candidate: 'candidate' + this.candidateNum, sendOut: 'sendOut' + this.candidateNum})
+
+   // this.candidates.push('candidate' + this.candidateNum)
+   
+    this.pendForm.addControl('candidate' + this.candidateNum, new FormControl('', Validators.required));
+    this.pendForm.addControl('sendOut' + this.candidateNum, new FormControl('', Validators.required));
+    console.log('Add Candidates')
+   // this.candidates.push({name: this.pendForm.controls['candidate' + this.candidateNum].value, uid:  this.pendForm.controls['sendOut' + this.candidateNum].value})
+    console.log(this.pendForm.controls)
+    console.log(this.candidates)
+    
+  }
  // <li class="btn btn-primary" [routerLink]="['/members/', user.id]" routerLinkActive="router-link-active" ><i class="fa fa-user"></i></li>
 
    

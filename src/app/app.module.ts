@@ -28,6 +28,7 @@ import { LoginComponent } from './login/login.component';
 
 import { UserResolverService } from './_resolvers/user-resolver.service';
 import { GetUsersResolver } from './_resolvers/get-users-resolver.service';
+import { ChartsComponent } from './charts/charts.component';
 
 
 
@@ -41,6 +42,7 @@ import { GetUsersResolver } from './_resolvers/get-users-resolver.service';
     HomeComponent,
     UserFormComponent,
     LoginComponent,
+    ChartsComponent,
     
   ],
   imports: [

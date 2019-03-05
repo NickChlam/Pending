@@ -7,7 +7,7 @@ services:
           dockerfile: Dockerfile
         image: angular-image
         volumes:
-          - .\:/usr/src/app
+          - ./:/usr/src/app
         ports:
           - "4200:4200"
         

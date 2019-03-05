@@ -9,8 +9,7 @@ import { User } from '../models/user';
 import { Offices} from '../models/offices';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { map, take, delayWhen } from 'rxjs/operators';
-import { delay } from 'q';
+
 
 
 
@@ -28,7 +27,8 @@ export class PendDetailComponent implements OnInit   {
   Offices = Offices;
   updateFormData: FormGroup;
   data: any;
-  
+  clicked: boolean = false;
+  index = 0;
  
   
   constructor( private afs: AngularFirestore, private dataService: DataService,
@@ -42,24 +42,21 @@ export class PendDetailComponent implements OnInit   {
                   this.data = data;
                   this.pending = data.data;
                   this.users = data.users
+                  this.convertUIDtoName(this.pending)
+                  console.log(this.pending)
                   })  
+
+                  
                   
    }  
 
-
-
-  
-  ngAfterViewInit(){
-    console.log('happened')
-    this.afs.collection('users').valueChanges().subscribe().unsubscribe()
-   }
   ngOnInit() {
     
     // TODO:  remove subscribe hack to force load the rest of user data 
     this.afs.collection('users').valueChanges().subscribe()
-
-    this.convertUIDtoName(this.pending)
-   
+    
+  
+    //
     console.log(this.data)
     this.updateFormData = this.fb.group({
       office: ['',],
@@ -106,7 +103,8 @@ export class PendDetailComponent implements OnInit   {
     pend.map(element => {
         
     element.jobOwner = this.getUserName(element.jobOwner, this.data.users);
-      element.sendOut = this.getUserName(element.sendOut, this.data.users);
+    //TODO: FIX 
+      //element.sendOut = this.getUserName(element.sendOut, this.data.users);
     });
     
     return pend;
@@ -122,7 +120,9 @@ export class PendDetailComponent implements OnInit   {
       return x.uid
     }).indexOf(uid)
 
-    return userData[x].knownAs;
+  
+      return userData[x].knownAs;
+    
   
   }
 
@@ -148,6 +148,20 @@ export class PendDetailComponent implements OnInit   {
     }, 0)
  
     return ( sum  ) ;
+  }
+
+  toggle(num?){
+    this.index = num;
+    if(this.clicked){ 
+      this.clicked = false
+    }
+    else this.clicked = true;
+
+    
+  }
+
+  getIndex(){
+    return this.index;
   }
 
   
