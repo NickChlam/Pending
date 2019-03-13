@@ -25,14 +25,12 @@
             <thead>
                 <tr>
                     <th>Company</th>
-                    <th>Candidate </th>
                     <th> Job Owner </th>
-                    <th>Candidate Owner </th>
                     <th> Salary </th>
                     <th> % </th>
                     <th> $</th>
                     <th> Notes </th>
-                    <th *ngIf="clicked"> Candidates -   Owner </th>
+                    <th *ngIf="clicked"> Candidate/Owner </th>
                     
                 </tr>
             </thead>
@@ -41,14 +39,12 @@
                     <!-- <td id="edit" (click)="bugDetail.configureForm(bug)" data-toggle="modal" [attr.data-target]=" '#' + bugDetail.modalId"> <i class="fa fa-pencil" aria-hidden="true"></i> </td>
                     <td id="delete" (click)="bugDetail.deleteBug(bug)"> <i class="fa fa-trash" aria-hidden="true"></i> </td> --> 
                     <td> {{ pend.company}} </td>
-                    <td> {{ pend.candidate }}</td>
                     <td> {{ pend.jobOwner }} </td> 
-                    <td> {{ pend.sendOut }}  </td>
                     <td> {{ pend.baseSalary | currency }}</td>
                     <td> {{ pend.feePercent }} </td>
                     <td> {{ calcFeeAmount(pend) | currency}}  </td>
                     <td> {{ pend.status }} </td>
-                    <table *ngIf="index==i">
+                    <table *ngIf="i === row && clicked">
                         <tr *ngFor="let cand of pend.cand"> 
                             <td > {{ cand.name }} {{ i }}</td>
                             <td> {{ cand.uid }}</td>
@@ -85,6 +81,6 @@
 
 <hr>
 
-<charts></charts>
+
 
    

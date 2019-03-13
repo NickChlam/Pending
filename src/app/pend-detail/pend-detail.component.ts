@@ -3,10 +3,7 @@ import { Pending } from '../models/pending';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { DataService } from '../services/data-service.service';
-import { AuthService } from '../services/auth.service';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '../models/user';
-import { Offices} from '../models/offices';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -24,16 +21,14 @@ export class PendDetailComponent implements OnInit   {
   pending: Pending[] = [];
   items: Observable<any[]>;
   userOffice = localStorage.getItem('office')
-  Offices = Offices;
   updateFormData: FormGroup;
   data: any;
-  clicked: boolean = false;
-  index = 0;
+  clicked: boolean ;
+  row: number;
+  prevRow : number;
  
   
   constructor( private afs: AngularFirestore, private dataService: DataService,
-               private auth: AuthService,
-               private afAuth: AngularFireAuth,
                private fb: FormBuilder,
                private route: ActivatedRoute
                ) {
@@ -42,6 +37,7 @@ export class PendDetailComponent implements OnInit   {
                   this.data = data;
                   this.pending = data.data;
                   this.users = data.users
+                  // TODO: fix converting to names on load 
                   this.convertUIDtoName(this.pending)
                   console.log(this.pending)
                   })  
@@ -53,7 +49,7 @@ export class PendDetailComponent implements OnInit   {
   ngOnInit() {
     
     // TODO:  remove subscribe hack to force load the rest of user data 
-    this.afs.collection('users').valueChanges().subscribe()
+   this.afs.collection('users').valueChanges().subscribe()
     
   
     //
@@ -150,19 +146,21 @@ export class PendDetailComponent implements OnInit   {
     return ( sum  ) ;
   }
 
-  toggle(num?){
-    this.index = num;
-    if(this.clicked){ 
-      this.clicked = false
-    }
-    else this.clicked = true;
+  toggle(num: number){
+    this.row = num;
 
-    
+    if (!this.clicked)
+      this.prevRow = -1;
+
+    if(this.prevRow === num){
+      this.clicked = false;
+    }else this.clicked = true;
+
+    this.prevRow = num;
+
   }
 
-  getIndex(){
-    return this.index;
-  }
+  
 
   
 

@@ -19,7 +19,7 @@
                         [ngClass]="{'alert-danger': pendForm.get('company').errors 
                         && pendForm.get('company').touched}"
 
-                        *ngIf="pendForm.get('company').touched 
+                        *ngIf="pendForm.get('company').touched  
                         && pendForm.get('company').hasError('required')">
                         Company is Required
                   </label>

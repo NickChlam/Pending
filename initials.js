@@ -9,5 +9,5 @@ function convertInitials(name){
     return initials.toUpperCase();
 }
 
-console.log(convertInitials('Nick Chlam'));
+console.log(convertInitials('Nick Johnson'));
 
