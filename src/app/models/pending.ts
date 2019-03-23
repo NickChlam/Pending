@@ -1,4 +1,5 @@
 export interface Pending {
+    cand?: string[];
     company: string;
     candidate: string;
     jobOwner: string;

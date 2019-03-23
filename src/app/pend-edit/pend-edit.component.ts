@@ -5,13 +5,21 @@ import { Pending } from '../models/pending';
 import { DataService } from '../services/data-service.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 
+interface Candidate {
+  candidate: string;
+  sendOut: string;
+}
 
 @Component({
   selector: 'app-pend-edit',
   templateUrl: './pend-edit.component.html',
   styleUrls: ['./pend-edit.component.css']
 })
+
+
+
 export class PendEditComponent  {
+  
   closeResult: string;
   pendForm: FormGroup;
   employees =  [];
@@ -19,11 +27,11 @@ export class PendEditComponent  {
   currUserFromFirebase = [];
   office;
   @Input() pending: Pending[];
-  candidates = [];
+  candidates: Candidate[] = [];
   candidateNum = 0;
   candOwners = [];
   
-
+ 
 
 
   constructor(  config: NgbModalConfig, 
@@ -38,13 +46,21 @@ export class PendEditComponent  {
 
  ngOnInit(){
   this.pendForm = this.fb.group({
-    company: ['',Validators.required],
-    jobOwner: ['',Validators.required],
-    baseSalary: ['',Validators.required],
-    feePercent: ['',Validators.required],
-    status: ['',Validators.required],
-    user: [''],
-    office: ['']
+    'company': ['',Validators.required],
+    'jobOwner': ['',Validators.required],
+    'baseSalary': ['',[
+        Validators.required,
+        Validators.pattern('^([0-9][0-9][0-9][0-9][0-9]|[1-9][0-9][0-9][0-9][0-9][0-9])$')
+        ]
+      ],
+    'feePercent': ['',[
+        Validators.required, 
+        Validators.pattern('^([0-9]{2})+(\.[0-9]{1,2})?$')
+      ]
+    ],
+    'status': ['',Validators.required],
+    'user': [''],
+    'office': ['']
   })
 
   //get current users uid
@@ -58,9 +74,10 @@ export class PendEditComponent  {
               this.getOffice();
               this.getUsersFromOffice(this.office);
       })
-
-
  }
+
+ get feePercent() { return this.pendForm.get('feePercent')}
+ get baseSalary() { return this.pendForm.get('baseSalary')}
 
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', backdropClass: 'light-blue-backdrop'})
@@ -87,25 +104,50 @@ export class PendEditComponent  {
   }
 
   save(){
-    var data = [];
-    
+    var test = [];
+    var objData: any = {};
     this.pendForm.controls['user'].setValue(this.user.uid)
     this.pendForm.controls['office'].setValue(this.office)
-    data.push(this.pendForm.value);
-        
 
-    this.pending.push(this.pendForm.value);
-    this.modalService.dismissAll() ;
-    //save data 
-    this.dataService.saveData(this.pendForm.value, 'items');
-    console.log(data)
-    this.pendForm.reset();
-  }
-  exit(){
-    this.modalService.dismissAll();
-    this.pendForm.reset();
     
+    // add each formControl.value to test array as an object 
+    this.candidates.forEach(element => {
+        test.push({
+         name: this.pendForm.controls[element.candidate].value,
+         uid: this.pendForm.controls[element.sendOut].value
+        })
+      
+    });
+
+    // remove candidates and owners from pendForm Control
+    this.removeCandFromControl(this.candidates, this.pendForm);
+    //add pendFrom.value data as an object 
+    objData = this.pendForm.value;
+    // add candidates object array to objData 
+    objData.cand = test;
+    // add that data to the UI 
+    this.pending.push(objData);
+    // dismiss modal -
+    this.modalService.dismissAll();
+    //save data 
+    this.dataService.saveData(objData, 'items');
+    // reset the pendForm 
+    this.pendForm.reset();
+    // empty candidate array so that when adding a new pend modal form is fresh to add new candidates  
+    this.candidates = [];
   }
+
+  exit(){
+    console.log(this.pendForm.value)
+    this.modalService.dismissAll();
+    if(this.candidates)
+      this.removeCandFromControl(this.candidates, this.pendForm);
+      
+    this.candidates = [];
+    this.pendForm.reset();
+   
+  }
+  
   getOffice(){
     this.currUserFromFirebase.forEach( value => {
       this.office = value.office
@@ -119,22 +161,29 @@ export class PendEditComponent  {
   }
 
   AddCandidate(){
-    
     this.candidateNum++;
     this.candidates.push({candidate: 'candidate' + this.candidateNum, sendOut: 'sendOut' + this.candidateNum})
-
-   // this.candidates.push('candidate' + this.candidateNum)
-   
     this.pendForm.addControl('candidate' + this.candidateNum, new FormControl('', Validators.required));
     this.pendForm.addControl('sendOut' + this.candidateNum, new FormControl('', Validators.required));
-    console.log('Add Candidates')
-   // this.candidates.push({name: this.pendForm.controls['candidate' + this.candidateNum].value, uid:  this.pendForm.controls['sendOut' + this.candidateNum].value})
-    console.log(this.pendForm.controls)
-    console.log(this.candidates)
-    
   }
- // <li class="btn btn-primary" [routerLink]="['/members/', user.id]" routerLinkActive="router-link-active" ><i class="fa fa-user"></i></li>
+ 
+   removeCandidate(num: number, cand){
+    this.candidates.splice(num,1);
+    this.pendForm.removeControl(cand.candidate);
+    this.pendForm.removeControl(cand.sendOut);
 
-   
+    
+   }
+
+   removeCandFromControl(cand: Candidate[], form: FormGroup){
+      cand.forEach(element => { 
+        form.removeControl(element.candidate);
+        form.removeControl(element.sendOut)
+      });    
+   }
+
+   AddCandArray(){
+
+   }
 
 }

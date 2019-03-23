@@ -21,6 +21,7 @@ td {
     border-bottom : .5px solid rgba(52,67,75,.1);
     font-weight: lighter;
 }
+
 tr{
     font-size: .75rem;
     cursor: pointer;

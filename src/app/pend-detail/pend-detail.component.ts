@@ -8,9 +8,6 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 
-
-
-
 @Component({
   selector: 'app-pend-detail',
   templateUrl: './pend-detail.component.html',
@@ -39,7 +36,8 @@ export class PendDetailComponent implements OnInit   {
                   this.users = data.users
                   // TODO: fix converting to names on load 
                   this.convertUIDtoName(this.pending)
-                  console.log(this.pending)
+                  this.convertUIDtoName
+                  console.log(this.pending[1].cand)
                   })  
 
                   
@@ -159,12 +157,6 @@ export class PendDetailComponent implements OnInit   {
     this.prevRow = num;
 
   }
-
-  
-
-  
-
- 
 
 
 }

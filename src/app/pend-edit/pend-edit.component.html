@@ -7,7 +7,7 @@
     </div>
 
 
-    <div class="modal-body">
+<div class="modal-body">
     <form [formGroup]="pendForm" >
         <div class="form-group" >
             <div class="row">
@@ -41,94 +41,27 @@
                       </label>
                 </div>
 
-            <!-- candidate owner -->
-                <!-- <div class="col">
-                        <label class="control-label" >Candidate Owner:</label>
-                        <select class="form-control" formControlName="sendOut">
-                            <option *ngFor="let employee of employees" value="{{employee.uid}}">{{employee.knownAs}}</option>
-                        </select>
-                        <label class="control-label has-error rounded" 
-                        [ngClass]="{'alert-danger': pendForm.get('jobOwner').errors 
-                        && pendForm.get('sendOut').touched}"
-
-                        *ngIf="pendForm.get('sendOut').touched 
-                        && pendForm.get('sendOut').hasError('required')">
-                        Candidate Owner Required
-                  </label>
-                </div> -->
             </div>
-           
-
-     <!-- candidates input  -->       
-     <div class="row">
-        <div class="col-lg-3">
-            <button class="btn btn-outline-dark" (click)="AddCandidate()">Add Candidate</button>
-        </div>
-    </div>
-            <!-- candidate -->
-            <div *ngFor="let cand of candidates">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <input class="form-control" type="text" [formControlName]="cand.candidate" placeholder="Candidate" >
-                            <label class="control-label has-error" 
-                            [ngClass]="{'alert-danger': pendForm.get(cand.candidate).errors 
-                            && pendForm.get(cand.candidate).touched}"
-
-                            *ngIf="pendForm.get(cand.candidate).touched 
-                            && pendForm.get(cand.candidate).hasError('required')">
-                            Candidate is Required 
-                        </label>
-                    </div>
-            <!-- candidate owner -->
-                
-                    <div class="col-sm-3">
-                        
-                            <select class="form-control" [formControlName]="cand.sendOut">
-                                <option *ngFor="let employee of employees" value="{{employee.uid}}">{{employee.knownAs}}</option>
-                            </select>
-                            <label class="control-label has-error rounded" 
-                                [ngClass]="{'alert-danger': pendForm.get(cand.sendOut).errors 
-                                && pendForm.get(cand.sendOut).touched}"
-        
-                                *ngIf="pendForm.get(cand.sendOut).touched 
-                                && pendForm.get(cand.sendOut).hasError('required')">
-                                Candidate Owner Required
-                            </label>
-                    </div>
-                
-
-                    
-              
-                </div>
-            </div> <!-- end ngFor-->
-            
-<!-- end candidates inputs-->
-
 
             <!-- salary -->
             <div class="row">
                 <div class="col-lg-3">
                     <input class="form-control" type="text" formControlName="baseSalary" placeholder="Salary" >
-                    <label class="control-label has-error" 
-                    [ngClass]="{'alert-danger': pendForm.get('baseSalary').errors 
-                    && pendForm.get('baseSalary').touched}"
+                    <label class="control-label has-error alert-danger" 
 
-                    *ngIf="pendForm.get('baseSalary').touched 
-                    && pendForm.get('baseSalary').hasError('required')">
+                    *ngIf="baseSalary.invalid && baseSalary.touched">
                    Salary Required
               </label>
 
               <!-- Fee Percent -->
                     <div class="row">
-                        <div class="co">
+                        <div class="form-group">
                             <input class="form-control" type="text" formControlName="feePercent" placeholder="Fee" >
-                            <label class="control-label has-error" 
-                            [ngClass]="{'alert-danger': pendForm.get('feePercent').errors 
-                            && pendForm.get('feePercent').touched}"
 
-                            *ngIf="pendForm.get('feePercent').touched 
-                            && pendForm.get('feePercent').hasError('required')">
-                            Fee Required
+                      <label class="control-label has-error alert-danger" 
+                    
+                       *ngIf="feePercent.invalid && feePercent.touched">
+                        <span>Number must be 10-35</span>  
                       </label>
                         </div>
                     </div>
@@ -137,9 +70,7 @@
                 <!-- Notes -->
                 <div class="col-lg-9">
                     <textarea class="form-control" rows="4" placeholder="Notes" formControlName="status"></textarea>
-                    <label class="control-label has-error" 
-                    [ngClass]="{'alert-danger': pendForm.get('status').errors 
-                    && pendForm.get('status').touched}"
+                    <label class="control-label has-error alert-danger" 
 
                     *ngIf="pendForm.get('status').touched 
                     && pendForm.get('status').hasError('required')">
@@ -149,17 +80,59 @@
             </div>
           
         </div>
+
+    <!-- candidates input  -->       
+        <div class="row">
+            <div class="col-lg-3">
+                <button class="btn btn btn-primary btn-lg" [disabled]="!pendForm.valid" (click)="AddCandidate()">Add
+                    Candidate</button>
+            </div>
+        </div>
+
+    <!-- candidate -->
+        <div *ngFor="let cand of candidates; let i = index">
+            <div class="row">
+                <div class="col-lg-6">
+                    <input class="form-control" type="text" [formControlName]="cand.candidate" placeholder="Candidate">
+                    <label class="control-label has-error alert-danger"
+                    *ngIf="pendForm.get(cand.candidate).touched 
+                    && pendForm.get(cand.candidate).hasError('required')">
+                        Candidate is Required
+                    </label>
+                </div>
+
+    <!-- candidate owner -->
+                    <div class="col-sm-3">
+                            <select class="form-control" [formControlName]="cand.sendOut">
+                                <option *ngFor="let employee of employees" value="{{employee.uid}}">{{employee.knownAs}}</option>
+                            </select>
+                            <label class="control-label has-error rounded alert-danger" 
+        
+                                *ngIf="pendForm.get(cand.sendOut).touched 
+                                && pendForm.get(cand.sendOut).hasError('required')">
+                                Candidate Owner Required
+
+                            </label>
+                    </div>
+                    <i (click)="removeCandidate(i, cand)" class="fa fa-minus-circle"></i>
+                </div>
+        </div> <!-- end ngFor-->
+            
+    <!-- end candidates inputs-->
+
     </form> <!-- end form -->
-    </div>
+</div>
     <div class="modal-footer">
    
-      <button type="button" class="btn btn-outline-dark" (click)="exit()">cancel</button>
-      <button type="button" [disabled]="!pendForm.valid" class="btn btn-outline-dark" (click)="save()">Save</button>
+      <button type="button" class="btn btn-primary btn-lg" (click)="exit()">cancel</button>
+      <button type="button" [disabled]="!pendForm.valid" class="btn btn-primary btn-lg" (click)="save()">Save</button>
+     
     </div>
 </ng-template>
 
   
-<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Add Pending</button>
+<button class="btn btn-lg btn-primary" (click)="open(content)">Add Pending</button>
+
 
   
 

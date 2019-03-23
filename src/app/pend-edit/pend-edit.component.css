@@ -7,3 +7,24 @@ label.alert-danger{
     font-size: .75rem;
     font-weight: bold;
 }
+.btn {        
+    font-size: 16px;
+    font-weight: bold;
+    background: #9E1C34;
+    border-radius: 3px;
+    border: none;
+    min-width: 140px;
+    outline: none !important;
+}
+.fa {
+    font-size: 2rem;
+    color: #9E1C34;
+    margin-top: .2rem;
+}
+.modal-header{
+    background: #9E1C34;
+    color: white;
+}
+.modal-body{
+    
+}
