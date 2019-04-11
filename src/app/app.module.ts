@@ -57,6 +57,7 @@ import { ChartsComponent } from './charts/charts.component';
 
   ],
   providers: [DataService, AuthService, AuthGuard, UserResolverService, GetUsersResolver],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ PendEditComponent ]
 })
 export class AppModule { }

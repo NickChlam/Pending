@@ -1,7 +1,7 @@
-<ng-template #content let-modal>
+
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Pending</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <button type="button" class="close" aria-label="Close" (click)="exit()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -128,10 +128,10 @@
       <button type="button" [disabled]="!pendForm.valid" class="btn btn-primary btn-lg" (click)="save()">Save</button>
      
     </div>
-</ng-template>
+
 
   
-<button class="btn btn-lg btn-primary" (click)="open(content)">Add Pending</button>
+<!-- <button class="btn btn-lg btn-primary" (click)="open(content)">Add Pending</button> -->
 
 
   

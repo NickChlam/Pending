@@ -4,7 +4,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { Observable } from 'rxjs';
 
 import { User } from '../models/user';
-import { map, take, first, takeUntil, tap } from 'rxjs/operators';
+import { map, take, first, takeUntil, tap, takeWhile, takeLast } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,24 +12,58 @@ import { map, take, first, takeUntil, tap } from 'rxjs/operators';
 export class DataService {
   pendingCollection: AngularFirestoreCollection<Pending>;
   userCollection: AngularFirestoreCollection<any>; 
+  private pendingDoc: AngularFirestoreDocument<Pending>;
   
 
-  constructor(private afs: AngularFirestore) { }
+  constructor(private afs: AngularFirestore) {
+    this.pendingCollection = afs.collection('items');
 
-  
+   }
+
+  addPending(pend){
+    this.pendingCollection.add(pend);
+  }
+
+  updatePending(id, update){
+    this.pendingDoc = this.afs.doc(`items/${id}`);
+   this.pendingDoc.update(update);
+  }
+
+  deletePending(id){
+     // Get the task document
+   this.pendingDoc = this.afs.doc(`items/${id}`);
+   // Delete the document
+   this.pendingDoc.delete();
+  }
+
+
+
+
+
+
+
+
   getPendData(collection: string, office: string){
-    var pendingData: Observable<Pending[]>;
+    var pendingData: Observable<any>;
      this.pendingCollection = this.afs.collection(collection, ref => {
       return ref 
         .where('office', '==', office)
-        
-        
     })
-    pendingData = this.pendingCollection.valueChanges().pipe(take(1))
+    // use snapshot chnages and map the id from the doc
+    pendingData = this.pendingCollection.snapshotChanges().pipe(take(1),
+        map(actions => {
+         return actions.map(a => {
+           const data = a.payload.doc.data() as Pending;
+            //Get document id
+           const id = a.payload.doc.id;
+           //Use spread operator to add the id to the document data
+         return { id, ...data };
+       })
+      }))
     return pendingData;
     
   }
-  
+  // TODO : delete this method and replace references with the above method  - above method can be renamed 
   getUsersFromOffice(office:string){
     var userData: Observable<any[]>;
     this.userCollection = this.afs.collection('users', ref => {
@@ -38,9 +72,9 @@ export class DataService {
         
     });
 
-    userData =  this.userCollection.valueChanges().pipe( take(1))
+     userData =  this.userCollection.valueChanges()
     
-    return userData;
+   return userData;
   }
 
   getData(){
@@ -56,6 +90,8 @@ export class DataService {
       
     
   }
+
+  // TODO:  replace with AddPending Method above 
   saveData(object: any,collection: string){
     this.pendingCollection = this.afs.collection(collection)
     this.pendingCollection.add(object);
@@ -89,7 +125,7 @@ export class DataService {
     
     this.userCollection = this.afs.collection('users');
 
-    userData =  this.userCollection.valueChanges().pipe(take(1));
+    userData =  this.userCollection.valueChanges();
 
     return userData;
 

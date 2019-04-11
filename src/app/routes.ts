@@ -11,7 +11,7 @@ export const appRoutes: Routes = [
     { path: '', component: HomeComponent},
     { path: 'home', component: HomeComponent},
     { path: 'signUp', component: UserFormComponent},
-    { path: 'detail', component: PendDetailComponent, canActivate: [AuthGuard], resolve: { users: GetUsersResolver, data: UserResolverService}}, 
+    { path: 'detail', component: PendDetailComponent, canActivate: [AuthGuard], resolve: { data: UserResolverService, users: GetUsersResolver}}, 
     { path: 'app-pend-edit', component: PendEditComponent, canActivate: [AuthGuard] },
     { path: '**', redirectTo: 'home', pathMatch: 'full'},
 ];

@@ -12,6 +12,7 @@ export class UserResolverService implements Resolve<any> {
   constructor(private dataService: DataService) { }
   
     resolve(): Observable<any>{
+      console.log("resolving items")
       var office = localStorage.getItem('office')
        return this.dataService.getPendData('items', office)
     }

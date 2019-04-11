@@ -5,7 +5,8 @@
 <div class="row justify-content-end">
     
     <div class="col-sm-2">
-            <app-pend-edit [pending]="pending" ></app-pend-edit>
+            <!-- <app-pend-edit *ngIf="show" [pending]="pending" #edit ></app-pend-edit>  -->
+            <button class="btn btn-primary" (click)="open()">Add Pending</button>
     </div>
 </div>
 <!-- <form [formGroup]="updateFormData" >
@@ -24,8 +25,10 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th class="edit"></th>
+                    <th class="delete"></th>
                     <th>Company</th>
-                    <th> Job Owner </th>
+                    <th class="jobOwner"> Job Owner </th>
                     <th> Salary </th>
                     <th> % </th>
                     <th> $</th>
@@ -35,14 +38,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let pend of pending; let i = index" (click)="toggle(i)">
-                    <!-- <td id="edit" (click)="bugDetail.configureForm(bug)" data-toggle="modal" [attr.data-target]=" '#' + bugDetail.modalId"> <i class="fa fa-pencil" aria-hidden="true"></i> </td>
-                    <td id="delete" (click)="bugDetail.deleteBug(bug)"> <i class="fa fa-trash" aria-hidden="true"></i> </td> --> 
-                    <td> {{ pend.company}} </td>
-                    <td> {{ pend.jobOwner }} </td> 
-                    <td> {{ pend.baseSalary | currency }}</td>
-                    <td> {{ pend.feePercent }} </td>
-                    <td> {{ calcFeeAmount(pend) | currency}}  </td>
+                <tr *ngFor="let pend of pending; let i = index" [attr.data-index]="i"   (click)="toggle(i)">
+                    <td class="edit" (click)="edit(i)"   > <i class="fa fa-pencil" aria-hidden="true"></i> </td>
+                    <td class="delete" (click)="delete(i)"   > <i class="fa fa-trash" aria-hidden="true"></i> </td>
+                    <!-- <td id="delete" (click)="bugDetail.deleteBug(bug)"> <i class="fa fa-trash" aria-hidden="true"></i> </td> -->  
+                    <td class='company'> {{ pend.company}} </td>
+                    <td class='jobOwner'> {{ pend.jobOwner }} </td> 
+                    <td class='salary'> {{ pend.baseSalary | currency }}</td>
+                    <td class='percent'> {{ pend.feePercent }} </td>
+                    <td> {{ calcFeeAmount(pend) | currency}}  </td> 
                     <td> {{ pend.status }} </td>
                     <table *ngIf="i === row && clicked">
                         <tr *ngFor="let cand of pend.cand"> 
@@ -81,6 +85,11 @@
 
 <hr>
 
-
-
+<!-- TODO: Remove -->
+<tr *ngFor="let task of pending2 | async; let i = index" [attr.data-index]="i">
+    <td>{{i + 1}}</td>
+    <td></td>
+    <td>{{task.id}}</td>
+ </tr>
    
+ <button (click)="test()">test</button>

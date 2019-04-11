@@ -29,12 +29,12 @@ export class AuthService {
               private afs: AngularFirestore,
               private router: Router,
               private alertify: AlertifyService  ){
-      
+      // TODO: refactor - this is bieng executed anytime the service is injected and used 
       this.user = this.afAuth.authState  
         .pipe(switchMap(user => {
           if(user) {
-            
-            return this.afs.doc<User>('users/' + user.uid).valueChanges()
+            console.log("injected user ")
+            return this.afs.doc<User>('users/' + user.uid).valueChanges().pipe(take(1))
           } else {
             return EMPTY;
           }

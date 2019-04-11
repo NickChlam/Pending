@@ -5,6 +5,17 @@ h1 {
 .table{
     
 }
+.delete, .edit{
+    padding: .5rem;
+    width: 3px;
+}
+.jobOwner, .company, .salary{
+    width: 120px;
+}
+.percent{
+    width: 75px;
+}
+
 
 thead th   {
     border-top: none;
@@ -54,6 +65,7 @@ i {
 .fa-pencil {
     transition: .5s ease;
     text-align: center;
+    color: green;
 }
 .fa-pencil:hover {
     transition: .2s ease;

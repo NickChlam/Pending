@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { AlertifyService } from '../services/alertify.service';
 import { AuthService } from '../services/auth.service';
 import { DataService } from '../services/data-service.service';
-import { User } from '../models/user';
+
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/detail']);
             }, err => {
               this.alertify.error(err)
+              //TODO: Add error logging 
             })
             
            
@@ -60,7 +61,7 @@ export class LoginComponent implements OnInit {
     }, err => {
       this.alertify.error(err.message)
       this.loginForm.controls.password.reset();
-      
+      //TODO add error logging 
     },) 
 
     

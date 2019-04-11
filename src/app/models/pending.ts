@@ -1,5 +1,7 @@
+import { Candidate } from '../models/candidate';
+
 export interface Pending {
-    cand?: string[];
+    cand?: Candidate[];
     company: string;
     candidate: string;
     jobOwner: string;
